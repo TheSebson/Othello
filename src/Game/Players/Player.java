@@ -1,4 +1,4 @@
-package Players;
+package Game.Players;
 
 import Game.Chip.Position;
 

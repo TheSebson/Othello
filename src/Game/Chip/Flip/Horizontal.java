@@ -5,10 +5,10 @@ import Game.Chip.Position;
 
 public class Horizontal extends Flip {
 
-    public void set(Chip[][] chips, Position pos, boolean chipSide) {
-        if(pos.getCol() == chips.length - 1 || chips[pos.getRow()][pos.getCol()+1] == null)
+    public void set(Chip[][] chips, Position pos, int chipSide) {
+        if(pos.getCol() == chips.length - 1 || chips[pos.getRow()][pos.getCol()+1].isSide() == 0)
             direction = -1;
-        else if(pos.getCol() == 0 || chips[pos.getRow() ][pos.getCol()- 1] == null)
+        else if(pos.getCol() == 0 || chips[pos.getRow() ][pos.getCol()- 1].isSide() == 0)
             direction = 1;
         else
             direction = 0;
@@ -41,12 +41,12 @@ public class Horizontal extends Flip {
         int row = pos.getRow();
         for(int i = direction; i + column < chips.length && column + i >= 0; i+= direction) {
             Chip nextChip = chips[row][column + i];
-            if (nextChip == null)
+            if (nextChip.isSide() == 0)
                 return false;
             else if (nextChip.isSide() == chipSide){
                 return (column + i == chips.length - 1 ||
                         column + i == 0 ||
-                        chips[row][column + i + direction] == null);
+                        chips[row][column + i + direction].isSide() == 0);
             }
         }
         return false;
@@ -58,8 +58,9 @@ public class Horizontal extends Flip {
         System.out.println("Flip Horizontall");
         while(pos.getCol() + j < chips.length && pos.getCol() + j >= 0 ){
             Chip nextSpot = chips[pos.getRow()][pos.getCol() + j];
-            if (nextSpot == null) return chips;
-            if (nextSpot.isSide() == !chipSide) chips[pos.getRow()][pos.getCol() + j].flip();
+            if (nextSpot.isSide() == 0) return chips;
+            if (nextSpot.isSide() != chipSide)
+                chips[pos.getRow()][pos.getCol() + j].flip();
             j += direction;
         }
 

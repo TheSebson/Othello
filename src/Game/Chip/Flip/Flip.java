@@ -10,9 +10,9 @@ public abstract class Flip {
     protected Chip[][] chips;
     protected int direction;
     protected Position pos;
-    protected boolean chipSide;
+    protected int chipSide;
 
-    public void set(Chip[][] chips, Position pos, boolean chipSide){
+    public void set(Chip[][] chips, Position pos, int chipSide){
         this.pos = pos;
         this.chipSide = chipSide;
         this.chips = chips;

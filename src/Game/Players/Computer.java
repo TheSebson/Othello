@@ -1,4 +1,4 @@
-package Players;
+package Game.Players;
 
 import Game.Chip.Position;
 
@@ -12,7 +12,7 @@ public class Computer extends Player {
         Random randomMove = new Random();
         int col = randomMove.nextInt(8);
         int row = randomMove.nextInt(8);
-//        System.out.println("Computer: " + col + ", " + row);
+        System.out.println("Computer: " + col + ", " + row);
         if (!moves[row][col]) return turn(moves);
         return  new Position(row, col);
     }

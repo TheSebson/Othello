@@ -1,8 +1,8 @@
 import Game.Board.Board;
 import Game.Chip.Position;
-import Players.Computer;
-import Players.Human;
-import Players.Player;
+import Game.Players.Computer;
+import Game.Players.Human;
+import Game.Players.Player;
 
 public class GameManager {
     Board board;
@@ -10,7 +10,8 @@ public class GameManager {
     public int boardSize = 8;
 
     GameManager(){
-        board = new Board(boardSize);
+        board = Board.getBoard();
+        board.initialize(boardSize);
         human = new Human();
         computer = new Computer();
     }
@@ -18,11 +19,14 @@ public class GameManager {
     void game() {
 
         while(board.isGameOn()) {
-            board.addPawn(human.turn(board.getPossibleMoves()), true);
+            human.turn(board.getPossibleMoves().getMoves());
+            System.out.println("Human played");
+            // TODO Refactoring
             while (true) {
-                Position computerPosition = computer.turn(board.getPossibleMoves());
-                if(board.getPossibleMoves()[computerPosition.getRow()][computerPosition.getCol()] ){
-                    board.addPawn(computer.turn(board.getPossibleMoves()), false);
+                System.out.println("Computer playing");
+                Position computerPosition = computer.turn(board.getPossibleMoves().getMoves());
+                if(board.getPossibleMoves().getMoves()[computerPosition.getRow()][computerPosition.getCol()] ){
+                    board.addPawn(computer.turn(board.getPossibleMoves().getMoves()), 2);
                     break;
                 }
             }

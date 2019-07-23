@@ -5,10 +5,10 @@ import Game.Chip.Position;
 
 public class DiagonallyUp extends Flip {
 
-    public void set(Chip[][] chips, Position pos, boolean chipSide) {
-        if(pos.getCol() == chips.length - 1 || pos.getRow() == chips.length - 1 || chips[pos.getRow()+1][pos.getCol()+1] == null)
+    public void set(Chip[][] chips, Position pos, int chipSide) {
+        if(pos.getCol() == chips.length - 1 || pos.getRow() == chips.length - 1 || chips[pos.getRow()+1][pos.getCol()+1].isSide() == 0)
             direction = -1;
-        else if(pos.getCol() == 0 || pos.getRow() == 0 || chips[pos.getRow() - 1][pos.getCol()- 1] == null)
+        else if(pos.getCol() == 0 || pos.getRow() == 0 || chips[pos.getRow() - 1][pos.getCol()- 1].isSide() == 0)
             direction = 1;
         else
             direction = 0;
@@ -23,7 +23,7 @@ public class DiagonallyUp extends Flip {
         for(int i = direction; (i + column < chips.length && column + i >= 0) && (i + row < chips.length && row + i >= 0); i+= direction) {
             Chip nextChip = chips[row + i][column + i];
             System.out.println(nextChip);
-            if (nextChip == null)
+            if (nextChip.isSide() == 0)
                 return false;
             else if (nextChip.isSide() == chipSide){
                 System.out.println("tak");
@@ -31,7 +31,7 @@ public class DiagonallyUp extends Flip {
                         column + i == 0 ||
                         row + i == chips.length - 1 ||
                         row + i == 0 ||
-                        chips[row + i + direction][column + i + direction] == null);
+                        chips[row + i + direction][column + i + direction].isSide() == 0);
             }
         }
         return false;
@@ -44,8 +44,9 @@ public class DiagonallyUp extends Flip {
         while( (pos.getCol() + j < chips.length && pos.getCol() + j >= 0) && (pos.getRow() + j < chips.length && pos.getRow() + j >= 0) ){
             Chip nextSpot = chips[pos.getRow() + j][pos.getCol() + j];
             System.out.println(nextSpot);
-            if (nextSpot == null) return chips;
-            if (nextSpot.isSide() == !chipSide) chips[pos.getRow() + j][pos.getCol() + j].flip();
+            if (nextSpot.isSide() == 0) return chips;
+            if (nextSpot.isSide() != chipSide)
+                chips[pos.getRow() + j][pos.getCol() + j].flip();
             j += direction;
         }
 

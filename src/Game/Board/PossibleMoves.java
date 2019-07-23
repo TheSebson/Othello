@@ -16,12 +16,17 @@ public class PossibleMoves {
     }
 
     public boolean isPossibleMove() {
+
+        return countMoves() > 0;
+    }
+
+    public int countMoves(){
         int result = 0;
 
         for (int i = 0; i< moves.length; i++)
             for (int j = 0; j < moves.length; j++ )
                 if (moves[i][j]) result++;
-        return result > 0;
+        return result;
     }
 
 
@@ -61,43 +66,43 @@ public class PossibleMoves {
     private boolean top(Position pos){
         if(pos.getRow() < 1)
             return false;
-        return chips[pos.getRow()-1][pos.getCol()] == null;
+        return chips[pos.getRow()-1][pos.getCol()].isSide() == 0;
     }
     private boolean rightUp(Position pos){
         if(pos.getRow() < 1 || pos.getCol() + 1 >= chips.length)
             return false;
-        return chips[pos.getRow() - 1][pos.getCol() + 1] == null;
+        return chips[pos.getRow() - 1][pos.getCol() + 1].isSide() == 0;
     }
     private boolean right(Position pos){
         if(pos.getCol() + 1 >= chips.length)
             return false;
-        return chips[pos.getRow()][pos.getCol()+1] == null;
+        return chips[pos.getRow()][pos.getCol()+1].isSide() == 0;
     }
     private boolean rightDown(Position pos){
         if(pos.getCol() + 1 >= chips.length || pos.getRow() + 1 >= chips.length)
             return false;
-        return chips[pos.getRow()+1][pos.getCol() + 1] == null;
+        return chips[pos.getRow()+1][pos.getCol() + 1].isSide() == 0;
 
     }
     private boolean down(Position pos){
         if(pos.getRow() + 1 >= chips.length)
             return false;
-        return chips[pos.getRow()+1][pos.getCol()] == null ;
+        return chips[pos.getRow()+1][pos.getCol()].isSide() == 0 ;
     }
     private boolean leftDown(Position pos){
         if(pos.getRow() + 1 >= chips.length || pos.getCol() < 1 )
             return false;
-        return chips[pos.getRow()+1][pos.getCol() - 1] == null;
+        return chips[pos.getRow()+1][pos.getCol() - 1].isSide() == 0;
     }
     private boolean left(Position pos){
         if(pos.getCol() < 1)
             return false;
-        return chips[pos.getRow()][pos.getCol()-1] == null;
+        return chips[pos.getRow()][pos.getCol()-1].isSide() == 0;
     }
     private boolean leftUp(Position pos){
         if(pos.getCol() < 1 || pos.getRow() < 1)
             return false;
-        return chips[pos.getRow()-1][pos.getCol() - 1] == null;
+        return chips[pos.getRow()-1][pos.getCol() - 1].isSide() == 0;
     }
 
     public String toString() {
