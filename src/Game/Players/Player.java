@@ -1,9 +1,10 @@
 package Game.Players;
 
+import Game.Board.Board;
 import Game.Chip.Position;
 
 public abstract class Player {
 
-    public abstract Position turn(boolean[][] moves);
+    public abstract void turn(Board board);
 
 }

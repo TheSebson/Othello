@@ -7,15 +7,17 @@ import java.util.List;
 
 public abstract class Flip {
 
-    protected Chip[][] chips;
-    protected int direction;
-    protected Position pos;
-    protected int chipSide;
+    Chip[][] chips;
+    int direction;
+    int column;
+    int row;
+    int chipSide;
 
     public void set(Chip[][] chips, Position pos, int chipSide){
-        this.pos = pos;
         this.chipSide = chipSide;
         this.chips = chips;
+        row = pos.getRow();
+        column = pos.getCol();
     }
 
     public abstract boolean check();

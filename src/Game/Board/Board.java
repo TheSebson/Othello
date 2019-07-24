@@ -19,6 +19,7 @@ public class Board extends JFrame {
     private JPanel panel;
     private Chip[][] buttons;
     private static Board board;
+    public boolean buttonClicked;
 
     public static Board getBoard() {
         if(board == null)
@@ -34,21 +35,23 @@ public class Board extends JFrame {
         possibleMoves = new PossibleMoves(size);
         flips = new ArrayList<>(Arrays.asList(new Horizontal(), new Vertical(), new DiagonallyUp(), new DiagonallyDown()));
 
-        setFrame(size);
-//        flips = new ArrayList<>(Arrays.asList(, new Horizontal(), new DiagonallyUp(), new DiagonallyDown()));
-        addPawn(new Position(size/2 - 1 ,size/2 - 1), 1);
-        addPawn(new Position(size/2  ,size/2 ), 1);
+        setupFrame(size);
+        addChip(new Position(size/2 - 1 ,size/2 - 1), 1);
+        addChip(new Position(size/2  ,size/2 ), 1);
 
-        addPawn(new Position(size/2 - 1 ,size/2 ), 2);
-        addPawn(new Position(size/2  ,size/2 - 1), 2);
+        addChip(new Position(size/2 - 1 ,size/2 ), 2);
+        addChip(new Position(size/2  ,size/2 - 1), 2);
 
     }
 
-    private void setFrame(int size){
+    public int getBoardSize(){
+        return buttons.length;
+    }
+    private void setupFrame(int size){
         panel = new JPanel();
         buttons = new Chip[size][size];
 
-        setSize(800,800);
+        setSize(size*100,size*100);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         panel.setLayout(new GridLayout(size, size));
@@ -67,14 +70,8 @@ public class Board extends JFrame {
         setVisible(true);
     }
 
-    public void updateChip(Position pos, int b){
-        buttons[pos.getRow()][pos.getCol()].setIcon(b);
-        buttons[pos.getRow()][pos.getCol()].setSide(b);
-        buttons[pos.getRow()][pos.getCol()].setEnabled(false);
 
-    }
-
-    public void updateButton() {
+    public void updateButtons() {
         for(int i = 0; i < buttons.length; i++)
         {
             for (int j = 0; j < buttons.length; j++) {
@@ -87,19 +84,16 @@ public class Board extends JFrame {
         }
     }
 
-    public synchronized void addPawn(Position pos, int side){
-        updateChip(pos, side);
+    public synchronized void addChip(Position pos, int side){
+        buttons[pos.getRow()][pos.getCol()].setSide(side);
         possibleMoves.updatePossibleMoves(pos, buttons);
         for(Flip way : flips) {
             way.set(buttons, pos, side);
             if (way.check())
                 this.buttons = way.flip();
         }
-        updateButton();
+        updateButtons();
 
-
-        System.out.println(possibleMoves.toString());
-        System.out.println(toString());
     }
 
 
@@ -111,18 +105,6 @@ public class Board extends JFrame {
         return possibleMoves;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder(buttons.length);
-        stringBuilder.append("    0.    1.   2.   3.   4.   5.   6.   7.\n");
-        for (int col = 0; col < buttons[1].length; col++){
-            stringBuilder.append(col + ".  ");
-            for (int row = 0; row < buttons[1].length; row++)
-                stringBuilder.append("[ " + (buttons[col][row].isSide() == 0 ? " " : buttons[col][row])+ " ]");
-            stringBuilder.append("\n");
-        }
-        return stringBuilder.toString();
-    }
 
     public boolean getWinner() {
         int playerScore = countChips();

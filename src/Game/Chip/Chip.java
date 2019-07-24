@@ -3,7 +3,6 @@ package Game.Chip;
 import Game.Board.Board;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,11 +27,9 @@ public class Chip extends JButton implements ActionListener {
         switch(side){
             case 1:
                 side = 2;
-
                 break;
             case 2:
                 side = 1;
-
                 break;
         }
         setIcon(side);
@@ -44,6 +41,8 @@ public class Chip extends JButton implements ActionListener {
 
     public void setSide(int side) {
         this.side = side;
+        setIcon(side);
+        setEnabled(false);
     }
 
     @Override
@@ -55,19 +54,19 @@ public class Chip extends JButton implements ActionListener {
         setIcon(O);
         switch(side){
             case 1:
-                setIcon(O);
                 setDisabledIcon(O);
                 break;
             case 2:
-                setIcon(X);
-                this.setDisabledIcon(X);
+                setDisabledIcon(X);
                 break;
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        board.addPawn(position, 1);
+        board.addChip(position, 1);
         setIcon(1);
+        board.buttonClicked = true;
+        setOpaque(board.buttonClicked);
     }
 }

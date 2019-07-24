@@ -6,20 +6,18 @@ import Game.Chip.Position;
 public class DiagonallyDown extends Flip {
 
     public void set(Chip[][] chips, Position pos, int chipSide) {
-        if(pos.getCol() == chips.length - 1 || pos.getRow() == 0 || chips[pos.getRow()-1][pos.getCol()+1].isSide() == 0)
+        super.set(chips, pos, chipSide);
+        if(column == chips.length - 1 || row == 0 || chips[row-1][column+1].isSide() == 0)
             direction = -1;
-        else if(pos.getCol() == 0 || pos.getRow() == chips.length - 1 || chips[pos.getRow() + 1][pos.getCol()- 1].isSide() == 0)
+        else if(column == 0 || row == chips.length - 1 || chips[row + 1][column- 1].isSide() == 0)
             direction = 1;
         else
             direction = 0;
-        super.set(chips, pos, chipSide);
+
     }
     @Override
     public boolean check() {
         if (direction == 0) return false;
-        System.out.println(" diagonally right direction: " + direction);
-        int column = pos.getCol();
-        int row = pos.getRow();
         for(int i = direction; (i + column < chips.length && column + i >= 0) && (row - i  < chips.length && row - i >= 0); i+= direction) {
             Chip nextChip = chips[row - i][column + i];
             System.out.println(nextChip + ", ["+ row + ", " + column + "]");
@@ -40,11 +38,14 @@ public class DiagonallyDown extends Flip {
     public Chip[][] flip() {
         System.out.println("fliping diagonally left");
         int j = 0;
-        while(pos.getCol() + j < chips.length && pos.getCol() + j >= 0 && pos.getRow() - j < chips.length && pos.getRow() - j >= 0 ){
-            Chip nextSpot = chips[pos.getRow() - j][pos.getCol() + j];
-            if (nextSpot.isSide() == 0) return chips;
+        while(column + j < chips.length && column + j >= 0
+                && row - j < chips.length && row - j >= 0 )
+        {
+            Chip nextSpot = chips[row - j][column + j];
+            if (nextSpot.isSide() == 0)
+                return chips;
             if (nextSpot.isSide() != chipSide)
-                chips[pos.getRow() - j][pos.getCol() + j].flip();
+                chips[row - j][column + j].flip();
             j += direction;
         }
 
